@@ -1,0 +1,5 @@
+<launch>
+<node pkg="turtlebot3_sample" type="talker.py" name="talker" output="screen"></node>
+<node pkg="turtlebot3_sample" type="listener.py" name="listener" output="screen"></node>
+</launch>
+
