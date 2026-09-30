@@ -1,0 +1,9 @@
+leg_tracker:
+  ros__parameters:
+    segment_distance: 0.1
+    min_segment_points: 3
+    pair_distance: 0.8
+    association_gate: 250.0
+    default_dt: 0.2
+    reset_gap: 1.0
+    marker_lifetime: 1.0
