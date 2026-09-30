@@ -40,6 +40,7 @@
 
 - 本機 Python 3.12 / NumPy 2.3.5 / SciPy 1.17.0：21 個演算法測試通過。涵蓋全部 1,265 幀 benchmark、無效值、任意點數、單群集、特徵與分類分數回歸、靜止與運動目標、配對、漏偵測刪除。
 - 非 ROS 環境下，ROS 節點 / launch 測試會明確 skip，不宣稱是 ROS runtime 通過。
+- GitHub Actions 第一輪已通過 Jazzy 建置及 30 個 pytest 案例（colcon 含 3 個測試群組，合計回報 33，0 errors / failures / skipped）。[執行記錄](https://github.com/jian960810-hub/multi_tracking/actions/runs/36685601680)。後續另加入安裝後 executable 的 headless launch 啟動測試，最新結果以 Actions 為準。
 - GitHub Actions 使用 ROS 2 Jazzy 真實建置與 DDS 測試，驗證 Best Effort LaserScan、Marker 收發、recorder、安裝後的 launch/RViz 資源。硬體驅動選擇測試只檢查 launch 結構，沒有連接實際 USB。
 - 這裡沒有 TB3 實機、LiDAR、RViz 桌面，也沒有帶 ground truth 的標註資料；不能以「無例外跑完」推論實際辨識精準度。演算法修正後需要在實際裝置上確認配對與閾值。
 - 追蹤以 scan 座標為準，未新增移動平台的 TF/里程計補償。

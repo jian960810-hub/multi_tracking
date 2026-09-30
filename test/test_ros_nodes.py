@@ -15,7 +15,7 @@ from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
 
 from real_time_6_5 import LegTrackerNode
-from getdata import ScanRecorder, write_scan
+from getdata import ScanRecorder
 
 
 @pytest.fixture

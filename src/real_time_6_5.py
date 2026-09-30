@@ -40,7 +40,7 @@ class LegTrackerNode(Node):
             raise ValueError('min_segment_points must be >= 3')
         self.model = AdaBoostModel(self.settings['model_path'])
         self.tracker = MultiTracker(self.settings['pair_distance'], self.settings['association_gate'])
-        self.publisher = self.create_publisher(Marker, self.settings['marker_topic'], 10)
+        self.publisher = self.create_publisher(Marker, self.settings['marker_topic'], 100)
         self.subscription = self.create_subscription(
             LaserScan, self.settings['scan_topic'], self.on_scan, qos_profile_sensor_data)
         self.last_stamp = None

@@ -65,3 +65,19 @@ def test_lidar_selection_without_hardware(model, package, file, tmp_path):
     source = result[0].launch_description_source
     assert isinstance(source.get_launch_description(ctx), LaunchDescription)
     assert source.location.endswith(file)
+
+
+def test_installed_headless_launch_starts_both_executables(tmp_path):
+    import subprocess
+    recording = tmp_path / 'launch_recording.txt'
+    result = subprocess.run([
+        'timeout', '--signal=INT', '5s', 'ros2', 'launch', 'multi_tracking',
+        'hello.launch.py', 'rviz:=false', 'record_scan:=true',
+        'output_file:=' + str(recording),
+    ], capture_output=True, text=True, timeout=15)
+    output = result.stdout + result.stderr
+    assert result.returncode == 124, output  # stopped deliberately after startup
+    assert 'Listening on /scan' in output, output
+    assert 'Recording to' in output, output
+    assert 'Traceback' not in output, output
+    assert recording.exists()
