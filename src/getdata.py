@@ -2,6 +2,7 @@
 """Record all rays as angle/range text with scan boundaries and timestamps."""
 from datetime import datetime
 import math
+import signal
 from pathlib import Path
 import time
 
@@ -10,6 +11,7 @@ from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.clock import Clock, ClockType
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
+from rclpy.signals import SignalHandlerOptions
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 
@@ -79,7 +81,8 @@ class ScanRecorder(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
+    # Handle Ctrl+C in Python so the ROS context stays alive until cleanup.
+    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
     node = None
     try:
         node = ScanRecorder()
@@ -88,6 +91,9 @@ def main(args=None):
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
+        # launch and the process group may both deliver SIGINT. Do not let a
+        # second signal interrupt file flush/close or DDS entity destruction.
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
         if node is not None:
             node.destroy_node()
         if rclpy.ok():
