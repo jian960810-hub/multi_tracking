@@ -35,6 +35,7 @@
 - frame 改變、時間倒退或超過 reset_gap 時清除追蹤狀態；相同時間戳的重複幀不增加命中數。
 - `stationary_simple_bencnmark.txt` 原本只被轉成未使用的 XYT，已解除 runtime 依賴，原檔保留作為測試資料。
 - 安裝後 launch 關閉測試發現 process group 與 launch 重複送出 SIGINT，可能中斷 destroy_node。兩個 entry point 改由 Python 接收 Ctrl+C，清理期間忽略重複 SIGINT，先關檔/銷毀節點，再 shutdown context。
+- 追蹤節點以 0.2 秒上限等待訊息，確保沒有掃描資料時也能處理 Ctrl+C。launch 測試要求兩個節點正常退出，禁止以升級訊號強制終止來掩蓋關閉問題。
 - recorder 預設存新時間戳檔案，以 exclusive create 防止覆寫；從第一幀起計時，Ctrl+C/到時均 flush/close，移除 `os._exit(0)`。
 
 ## 測試與限制

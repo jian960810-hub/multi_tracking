@@ -80,4 +80,6 @@ def test_installed_headless_launch_starts_both_executables(tmp_path):
     assert 'Listening on /scan' in output, output
     assert 'Recording to' in output, output
     assert 'Traceback' not in output, output
+    assert 'escalating' not in output, output
+    assert output.count('process has finished cleanly') == 2, output
     assert recording.exists()

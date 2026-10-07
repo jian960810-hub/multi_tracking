@@ -117,7 +117,9 @@ def main(args=None):
     node = None
     try:
         node = LegTrackerNode()
-        rclpy.spin(node)
+        # A bounded wait lets Python handle SIGINT even without incoming scans.
+        while rclpy.ok():
+            rclpy.spin_once(node, timeout_sec=0.2)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
