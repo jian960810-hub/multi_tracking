@@ -26,10 +26,10 @@ def test_installed_launch_and_rviz():
     laser = next(d for d in displays if d['Class'].endswith('/LaserScan'))
     assert laser['Topic']['Reliability Policy'] == 'Best Effort'
     assert all(d['Class'].startswith('rviz_default_plugins/') for d in displays)
-    assert (share / 'src/adaboost_trained_data_mess_430.txt').is_file()
+    assert (share / 'resource/adaboost_trained_data_mess_430.txt').is_file()
     package = ET.parse(ROOT / 'package.xml').getroot()
     assert package.findtext('name') == 'multi_tracking'
-    assert package.findtext('export/build_type') == 'ament_cmake'
+    assert package.findtext('export/build_type') == 'ament_python'
 
 
 def test_lidar_requires_explicit_supported_model():

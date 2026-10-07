@@ -16,14 +16,14 @@ from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
 
-from tracking_core import AdaBoostModel, MultiTracker, scan_segments
+from .tracking_core import AdaBoostModel, MultiTracker, scan_segments
 
 
 class LegTrackerNode(Node):
     def __init__(self, **kwargs):
         super().__init__('leg_tracker', **kwargs)
         default_model = str(Path(get_package_share_directory('multi_tracking')) /
-                            'src' / 'adaboost_trained_data_mess_430.txt')
+                            'resource' / 'adaboost_trained_data_mess_430.txt')
         defaults = {
             'scan_topic': '/scan', 'marker_topic': '/visualization_marker',
             'model_path': default_model, 'segment_distance': 0.1,

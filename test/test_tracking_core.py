@@ -5,10 +5,10 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from tracking_core import AdaBoostModel, MultiTracker, pair_legs, scan_segments, segment_features
+from multi_tracking.tracking_core import AdaBoostModel, MultiTracker, pair_legs, scan_segments, segment_features
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / 'src/adaboost_trained_data_mess_430.txt'
+MODEL = ROOT / 'resource/adaboost_trained_data_mess_430.txt'
 
 
 @pytest.mark.parametrize('count', [1, 90, 360, 720, 1080])

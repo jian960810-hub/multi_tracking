@@ -8,18 +8,34 @@ TurtleBot3 2D LiDAR 人腳辨識、多目標追蹤與掃描資料記錄。根目
 |---|---|
 | `launch/hello.launch.py` | 啟動追蹤、RViz，可選擇同時收資料或啟動本機 LiDAR |
 | `launch/lidar.launch.py` | 依 LDS-01 / LDS-02 / LDS-03 選擇官方 ROS 2 驅動 |
-| `src/real_time_6_5.py` | ROS 2 訂閱 `/scan`，發布追蹤 Marker |
-| `src/tracking_core.py` | 從主程式分出的分群、13 個特徵、AdaBoost、配對、Kalman 追蹤 |
-| `src/getdata.py` | 將每幀掃描寫入兩欄 angle/range 文字檔 |
-| `src/adaboost_trained_data_mess_430.txt` | 原始模型，內容未修改 |
+| `multi_tracking/real_time_6_5.py` | ROS 2 訂閱 `/scan`，發布追蹤 Marker |
+| `multi_tracking/tracking_core.py` | 從主程式分出的分群、13 個特徵、AdaBoost、配對、Kalman 追蹤 |
+| `multi_tracking/getdata.py` | 將每幀掃描寫入兩欄 angle/range 文字檔 |
+| `resource/adaboost_trained_data_mess_430.txt` | 原始模型，內容未修改 |
 | `rviz/multi_tracking_rviz_5_28.rviz` | RViz2 的 LaserScan 與 Marker 顯示 |
-| `config/tracking.yaml` | 分群與追蹤參數 |
-| `CMakeLists.txt`、`package.xml` | `ament_cmake` 建置、依賴與安裝規則 |
+| `resource/tracking.yaml` | 分群與追蹤參數 |
+| `setup.py`、`setup.cfg`、`package.xml` | `ament_python` 建置、依賴與安裝規則 |
 | `test/` | 數值回歸、原始資料重播、真實 ROS 訊息與 launch 測試 |
 | `docs/FILE_AUDIT.md` | 每個原始檔案的保留／未複製原因 |
 | `docs/MIGRATION.md` | 遷移與錯誤修正細節、測試範圍 |
 
 原始資料夾有 `COLCON_IGNORE`，不會被當成另一個 ROS 2 套件建置。原始程式本身有已知錯誤，請執行根目錄安裝出的 ROS 2 節點。
+
+## Python 套件結構
+
+主要套件依 `ament_python` 格式整理：`launch/`、`multi_tracking/`、`resource/`、`rviz/`、`test/`、`package.xml`、`setup.cfg`、`setup.py`。
+`multi_tracking/__init__.py` 讓程式能作為 Python 模組匯入；`resource/multi_tracking` 是 ROS 套件索引標記。
+參數與模型也存於 `resource/`。原始備份、文件與自動測試設定仍保留在 repo 中。
+
+從之前的 `ament_cmake` 版本更新時，請先關閉節點、開新終端機，再清除**本套件**的舊建置結果（預設 isolated install）：
+
+```bash
+source /opt/ros/jazzy/setup.bash
+cd ~/colon_ws
+rm -rf build/multi_tracking install/multi_tracking
+```
+
+接著依下方步驟重新建置。新執行檔名稱為 `real_time_6_5` 與 `getdata`，不再帶 `.py`；launch 指令不變。
 
 ## 安裝與建置
 
@@ -47,7 +63,7 @@ sudo apt install python3-colcon-common-extensions python3-rosdep
 rosdep update
 cd ~/colon_ws
 rosdep install --from-paths src --ignore-src -r -y --rosdistro jazzy
-colcon build --packages-select multi_tracking --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
+colcon build --packages-select multi_tracking
 source install/setup.bash
 ```
 
@@ -108,10 +124,10 @@ ros2 launch multi_tracking hello.launch.py use_sim_time:=true
 ros2 launch multi_tracking hello.launch.py record_scan:=true
 
 # 只收資料，不執行追蹤；0.0 表示直到 Ctrl+C
-ros2 run multi_tracking getdata.py --ros-args -p duration_seconds:=0.0
+ros2 run multi_tracking getdata --ros-args -p duration_seconds:=0.0
 
 # 指定新檔案位置；若檔案已存在會拒絕覆寫
-ros2 run multi_tracking getdata.py --ros-args -p output_file:=/tmp/laser_trial_01.txt -p duration_seconds:=60.0
+ros2 run multi_tracking getdata --ros-args -p output_file:=/tmp/laser_trial_01.txt -p duration_seconds:=60.0
 ```
 
 預設存至 `~/multi_tracking_data/laser_日期時間.txt`。每一幀都有 `# scan ...` 註解，記錄時間、frame、點數與量測範圍；下面仍是原本的「角度（弧度）、距離（公尺）」兩欄。`numpy.loadtxt()` 可忽略註解讀取。保留原始 `inf` / `nan` 距離，以免扭曲收集資料；追蹤器則會排除這些無效回波。需要完整 LaserScan、intensities、TF 或 rosbag 重播時，請另用 `ros2 bag record /scan /tf /tf_static`。

@@ -4,7 +4,7 @@
 
 | 原始相對路徑 | 決定與原因 |
 |---|---|
-| `CMakeLists.txt` | 建立根目錄 ament_cmake 設定 |
+| `CMakeLists.txt` | 以根目錄 setup.py / setup.cfg 取代（ament_python） |
 | `launch/hello.launch` | 複製並轉成 launch/hello.launch.py |
 | `launch/sample.launch` | 只列印 LaserScan 的 C++ 示範；收資料需求由 getdata.py 負責 |
 | `launch/test.launch` | chatter 示範，不處理人腳追蹤 |
@@ -14,7 +14,7 @@
 | `src/New_trainball.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
 | `src/New_trainbox.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
 | `src/ada_demo.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
-| `src/adaboost_trained_data_mess_430.txt` | 目前主入口模型；逐 byte 複製至 src/ |
+| `src/adaboost_trained_data_mess_430.txt` | 目前主入口模型；逐 byte 複製至 resource/ |
 | `src/adae.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
 | `src/ball.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
 | `src/final.py` | 先前左右腳濾波/顯示實驗；未被目前主入口引用；原始第 233 行有 TabError |
@@ -53,3 +53,7 @@
 | `src/trainbox.txt` | main*/final* 的其他訓練模型；不是 real_time_6_5.py 的模型 |
 
 壓縮檔額外包含 `src/hello.py`（print hello）及 `src/hello2.py`（雙迴圈印字）兩個示範。其餘 47 個檔案與 GitHub 資料夾逐 byte 相同。壓縮檔保留，兩個示範不加入 ROS 2 套件。
+
+## 現行安裝位置
+
+Python 套件格式調整後，本文中根目錄 `src/` 的新程式位於 `multi_tracking/`；模型位於 `resource/adaboost_trained_data_mess_430.txt`，參數位於 `resource/tracking.yaml`。原始 `turtlebot3_sample/src/` 路徑不變。

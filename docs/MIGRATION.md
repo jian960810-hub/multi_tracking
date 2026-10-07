@@ -47,3 +47,10 @@
 - 這裡沒有 TB3 實機、LiDAR、RViz 桌面，也沒有帶 ground truth 的標註資料；不能以「無例外跑完」推論實際辨識精準度。演算法修正後需要在實際裝置上確認配對與閾值。
 - 追蹤以 scan 座標為準，未新增移動平台的 TF/里程計補償。
 - 原始 package.xml 的 license 為 TODO；保留此資訊，未擅自替原程式指定授權。
+
+## Python 套件格式調整（2026-10-07）
+
+- 建置系統由 `ament_cmake` 改成 `ament_python`，移除根目錄 `CMakeLists.txt`，新增 `setup.py`、`setup.cfg` 與 `resource/multi_tracking`。
+- `src/*.py` 移到 `multi_tracking/`，以 `__init__.py` 與相對匯入組成 Python 套件；模型與參數移到 `resource/`。
+- setup.py 安裝 launch、RViz、模型與參數，並建立 `real_time_6_5`、`getdata` 兩個 console entry points。
+- 已同步調整 launch、README、測試與 CI；演算法、模型及原始備份內容不變。先前的 CMake 測試數含群組，新版以 pytest 案例數為準。

@@ -14,8 +14,8 @@ from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
 
-from real_time_6_5 import LegTrackerNode
-from getdata import ScanRecorder
+from multi_tracking.real_time_6_5 import LegTrackerNode
+from multi_tracking.getdata import ScanRecorder
 
 
 @pytest.fixture

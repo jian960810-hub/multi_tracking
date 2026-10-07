@@ -16,13 +16,14 @@ jobs:
       - name: Install test and runtime dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends python3-numpy python3-scipy python3-pytest python3-yaml ros-jazzy-ament-cmake-pytest ros-jazzy-rviz2
+          apt-get install -y --no-install-recommends python3-numpy python3-scipy python3-pytest python3-yaml ros-jazzy-rviz2
       - name: Build and test against real Jazzy
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build --packages-select multi_tracking --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
+          colcon build --packages-select multi_tracking
           source install/setup.bash
           python3 -c 'import rclpy, sensor_msgs, visualization_msgs, launch_ros'
+          (cd /tmp && python3 -c 'import multi_tracking.real_time_6_5, multi_tracking.getdata, multi_tracking.tracking_core')
           ros2 pkg executables multi_tracking
           ros2 launch multi_tracking hello.launch.py --show-args
           colcon test --packages-select multi_tracking --event-handlers console_direct+
