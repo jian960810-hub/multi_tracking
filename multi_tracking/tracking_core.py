@@ -1,7 +1,7 @@
 """ROS-independent port of the detector/tracker in real_time_6_5.py.
 
 The bundled classifier's 13 feature definitions and weights are retained.
-See docs/MIGRATION.md for intentional fixes to segmentation and tracking.
+Segmentation and tracking fixes are covered by the regression tests.
 """
 
 from collections import deque

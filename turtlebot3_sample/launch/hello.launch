@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<!-- include file="$(find turtlebot3_bringup)/launch/turtlebot3_lidar.launch" /-->
-	<node pkg="turtlebot3_sample" type="real_time_6_5.py" name="real_time_6_5" output="screen"></node>
-	<!--在rviz中顯示-->
-	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find turtlebot3_sample)/src/multi_tracking_rviz_5_28.rviz"/>
-</launch>

@@ -38,7 +38,7 @@ def test_degenerate_features_are_finite(xy):
 
 
 def legacy_functions():
-    source = ROOT / 'turtlebot3_sample/src/real_time_6_5.py'
+    source = ROOT / 'test/data/legacy_real_time_6_5.py'
     names = {'isbox', 'boundary_std', 'boundary_length', 'mean_curvature', 'mean_angular',
              'mean_average_deviation_from_median', 'linearity', 'circularity'}
     tree = ast.parse(source.read_text())
@@ -149,7 +149,7 @@ def test_assignment_is_one_to_one_and_gates_far_detection():
 
 
 def test_replay_supplied_benchmark_without_nonfinite_states():
-    data = np.loadtxt(ROOT / 'turtlebot3_sample/src/stationary_simple_bencnmark.txt', delimiter=',')
+    data = np.loadtxt(ROOT / 'test/data/stationary_simple_bencnmark.txt', delimiter=',')
     frames = data.reshape(-1, 360, 2)
     model = AdaBoostModel(MODEL)
     tracker = MultiTracker()
